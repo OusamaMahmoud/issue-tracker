@@ -1,11 +1,7 @@
 import prisma from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import { creteIssueSchema } from "../../validationSchemas";
 
-const creteIssueSchema = z.object({
-  title: z.string().min(1).max(255),
-  description: z.string().min(1),
-});
 export async function POST(requst: NextRequest) {
   const body = await requst.json();
   const validation = creteIssueSchema.safeParse(body);
