@@ -15,7 +15,8 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { creteIssueSchema } from "../../validationSchemas";
 import z from "zod";
-import { ErrorMessage } from "@/app/ErrorMessage";
+import { ErrorMessage } from "@/app/components/ErrorMessage";
+import Spinner from "@/app/components/Spinner";
 
 type FormIssue = z.infer<typeof creteIssueSchema>;
 const NewPageIssue = () => {
@@ -29,6 +30,7 @@ const NewPageIssue = () => {
     resolver: zodResolver(creteIssueSchema),
   });
   const [error, setError] = useState("");
+  const [isSubmitting, setSubmitting] = useState(false);
   return (
     <div className="max-w-xl">
       {error && (
@@ -40,9 +42,11 @@ const NewPageIssue = () => {
         className=" space-y-3"
         onSubmit={handleSubmit(async (data) => {
           try {
+            setSubmitting(true);
             await axios.post("/api/issues", data);
             router.push("/issues");
           } catch (err) {
+            setSubmitting(false);
             setError("please set the fields properly");
           }
         })}
@@ -59,7 +63,9 @@ const NewPageIssue = () => {
           )}
         />
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
-        <Button>Submit New Issue</Button>
+        <Button disabled={isSubmitting}>
+          Submit New Issue {isSubmitting && <Spinner />}
+        </Button>
       </form>
     </div>
   );
