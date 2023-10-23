@@ -2,7 +2,6 @@
 import {
   Button,
   Callout,
-  Text,
   TextField,
   TextFieldRoot,
 } from "@radix-ui/themes";
@@ -15,8 +14,7 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { creteIssueSchema } from "../../validationSchemas";
 import z from "zod";
-import { ErrorMessage } from "@/app/components/ErrorMessage";
-import Spinner from "@/app/components/Spinner";
+import { ErrorMessage , Spinner } from "@/app/components";
 
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
   ssr: false,
