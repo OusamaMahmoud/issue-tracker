@@ -6,11 +6,11 @@ import {
   TextField,
   TextFieldRoot,
 } from "@radix-ui/themes";
-import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { creteIssueSchema } from "../../validationSchemas";
@@ -18,7 +18,12 @@ import z from "zod";
 import { ErrorMessage } from "@/app/components/ErrorMessage";
 import Spinner from "@/app/components/Spinner";
 
+const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
+  ssr: false,
+});
+
 type FormIssue = z.infer<typeof creteIssueSchema>;
+
 const NewPageIssue = () => {
   const router = useRouter();
   const {
@@ -31,7 +36,7 @@ const NewPageIssue = () => {
   });
   const [error, setError] = useState("");
   const [isSubmitting, setSubmitting] = useState(false);
-  const submit =  handleSubmit(async (data) => {
+  const submit = handleSubmit(async (data) => {
     try {
       setSubmitting(true);
       await axios.post("/api/issues", data);
@@ -48,10 +53,7 @@ const NewPageIssue = () => {
           <Callout.Text color="red">{error}</Callout.Text>
         </Callout.Root>
       )}
-      <form
-        className=" space-y-3"
-        onSubmit={submit}
-      >
+      <form className=" space-y-3" onSubmit={submit}>
         <TextFieldRoot>
           <TextField.Input placeholder="title" {...register("title")} />
         </TextFieldRoot>
