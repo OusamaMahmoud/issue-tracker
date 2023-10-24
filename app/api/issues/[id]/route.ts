@@ -2,6 +2,7 @@ import prisma from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { issueSchema } from "@/app/validationSchemas";
 
+
 interface Props {
   params: { id: string };
 }
@@ -41,7 +42,7 @@ export async function DELETE(request: NextRequest, { params }: Props) {
   });
   if (!issue)
     return NextResponse.json({ error: "Invalid issue" }, { status: 404 });
-  
+
   const deletedIssue = await prisma.issue.delete({
     where: {
       id: parseInt(params.id),
