@@ -9,17 +9,14 @@ import "easymde/dist/easymde.min.css";
 import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { issueSchema } from "../../validationSchemas";
 import z from "zod";
 import { ErrorMessage , Spinner } from "@/app/components";
 import { Issue } from "@prisma/client";
+import SimpleMDE from "react-simplemde-editor";
 
-const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
-  ssr: false,
-});
 
 type FormIssueData = z.infer<typeof issueSchema>;
 
@@ -44,7 +41,7 @@ const IssueForm = ({issue}:{issue?:Issue}) => {
         await axios.post("/api/issues", data);
       }
       router.push("/issues");
-      router.refresh();
+      // router.refresh();
     } catch (err) {
       setSubmitting(false);
       setError("please set the fields properly");
