@@ -4,7 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 import { AiFillBug } from "react-icons/ai";
+import { Box } from "@radix-ui/themes";
+import { useSession } from "next-auth/react";
 const NavBar = () => {
+  const { status, data: session } = useSession();
   const cuurentPath = usePathname();
   const links = [
     { label: "dashboard", href: "/" },
@@ -31,6 +34,17 @@ const NavBar = () => {
           </li>
         ))}
       </ul>
+      <Box>
+        {status === "authenticated" && (
+          <Link href={"/api/auth/signout"}>
+            Log out {' '}
+            {/* {session?.user && <span className="inline-block ml-5 text-violet-800">{session.user.name}</span>} */}
+          </Link>
+        )}
+        {status === "unauthenticated" && (
+          <Link href={"/api/auth/signin"}>Login</Link>
+        )}
+      </Box>
     </nav>
   );
 };
