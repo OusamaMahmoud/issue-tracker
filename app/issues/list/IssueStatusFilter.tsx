@@ -16,8 +16,8 @@ const IssueStatusFilter = () => {
   return (
     <Select.Root
       onValueChange={(status) => {
-        const query = status ? `?status=${status}` : "";
-        router.push("/issues/list" + query);
+        const osos = status ? `?status=${status}` : "";
+        router.push("/issues/list" + osos);
       }}
     >
       <Select.Trigger placeholder="Filter by status" />
