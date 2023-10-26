@@ -7,29 +7,22 @@ import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/app/components";
 import toast, { Toaster } from "react-hot-toast";
 const AssigneeSelect = ({ issue }: { issue: Issue }) => {
-  const {
-    data: users,
-    error,
-    isLoading,
-  } = useQuery<User[], Error>({
-    queryKey: ["users"],
-    queryFn: () => axios.get("/api/users").then((res) => res.data),
-    staleTime: 60 * 1000,
-    retry: 3,
-  });
+  const { data: users, error, isLoading } = useUsers();
+
+  const assignUser = (userId: string) => {
+    axios
+      .patch("/api/xissues/" + issue.id, {
+        assignedToUserId: userId || null,
+      })
+      .catch(() => toast.error("Changes coudn't be send "));
+  };
   if (isLoading) return <Skeleton />;
   if (error) return null;
   return (
     <>
       <Select.Root
         defaultValue={issue.assignedToUserId || ""}
-        onValueChange={(userId) => {
-          axios
-            .patch("/api/xissues/" + issue.id, {
-              assignedToUserId: userId || null,
-            })
-            .catch(() => toast.error("Changes coudn't be send "));
-        }}
+        onValueChange={assignUser}
       >
         <Select.Trigger placeholder="Assign..." />
         <Select.Content>
@@ -48,5 +41,12 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
     </>
   );
 };
+const useUsers = () =>
+  useQuery<User[], Error>({
+    queryKey: ["users"],
+    queryFn: () => axios.get("/api/users").then((res) => res.data),
+    staleTime: 60 * 1000,
+    retry: 3,
+  });
 
 export default AssigneeSelect;
