@@ -1,5 +1,5 @@
-import Pagination from "./components/Pagination";
+import { Box } from "@radix-ui/themes";
 
 export default function Home() {
-  return <Pagination itemsCount={100} pageSize={10} currentPage={10} />;
+  return <Box>HELLOW WORLD</Box>;
 }
