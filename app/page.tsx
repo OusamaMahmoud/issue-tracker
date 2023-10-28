@@ -1,5 +1,6 @@
-import { Box } from "@radix-ui/themes";
+
+import LatestsIssues from "./LatestsIssues";
 
 export default function Home() {
-  return <Box>HELLOW WORLD</Box>;
+  return <LatestsIssues />;
 }
