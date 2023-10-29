@@ -4,6 +4,7 @@ import IssueAction from "./IssueAction";
 import { Flex } from "@radix-ui/themes";
 import Pagination from "@/app/components/Pagination";
 import IssueTable, { IssueQuery, columnNames } from "./IssueTable";
+import type { Metadata } from "next";
 
 interface Props {
   searchParams: IssueQuery;
@@ -34,7 +35,7 @@ const IssuePage = async ({ searchParams }: Props) => {
   const issueCount = await prisma.issue.count({ where });
 
   return (
-    <Flex direction={'column'} gap={'3'}>
+    <Flex direction={"column"} gap={"3"}>
       <IssueAction />
       <IssueTable searchParams={searchParams} issues={issues} />
       <Pagination
@@ -47,4 +48,12 @@ const IssuePage = async ({ searchParams }: Props) => {
 };
 
 export const dynamic = "force-dynamic";
+
+
+export const metadata: Metadata = {
+  title: "Isssue Tracker - issue List",
+  description:
+    "The page allows for easy filtering and searching of issues based on various criteria such as status, priority, assignee, creation date, or tags. This functionality enables users to quickly locate and focus on specific issues of interest.",
+};
+
 export default IssuePage;
